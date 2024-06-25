@@ -1,0 +1,80 @@
+﻿@page "/order/detail/{id:int}"
+@inject IOrderService _orderService
+@inject NavigationManager _navigationManager
+
+<PageTitle>Serwis samochodowy | Szczegóły zamówienia</PageTitle>
+
+<h1>Szczegóły zamówienia</h1>
+<br />
+<button @onclick="BackToList" class="btn btn-secondary" type="button">
+    <span class="oi oi-media-skip-backward"></span>
+    Wróć do listy
+</button>
+<br />
+<div>
+    <h4>Informacje o zamówieniu</h4>
+    <p><strong>Id:</strong> @order.Id</p>
+    <p><strong>Data przyjęcia:</strong> @order.AdmissionDate.ToString("dd.MM.yyyy")</p>
+    <p><strong>Data zakończenia:</strong> @(order.CompletionDate.HasValue ? order.CompletionDate.Value.ToString("dd.MM.yyyy") : "Nie zakończono")</p>
+
+    <h4>Informacje o samochodzie</h4>
+    <p><strong>Model i Marka:</strong> @order.Car.Model @order.Car.Make</p>
+    <p><strong>Rok produkcji:</strong> @order.Car.Year</p>
+
+    <h4>Informacje o kliencie</h4>
+    <p><strong>Imię i nazwisko:</strong> @order.Personel.Name @order.Personel.LastName</p>
+    <p><strong>Email:</strong> @order.Personel.Email</p>
+    <p><strong>Telefon:</strong> @order.Personel.Phone</p>
+
+    @if (order.Personel != null)
+    {
+        <h4>Informacje o personelu</h4>
+        <p><strong>Imię:</strong> @order.Personel.Name @order.Personel.LastName</p>
+    }
+
+    <h4>Usługi</h4>
+    @if (order.Services != null && order.Services.Count > 0)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nazwa</th>
+                    <th>Opis</th>
+                    <th>Cena</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var service in order.Services)
+                {
+                    <tr>
+                        <td>@service.Name</td>
+                        <td>@service.Description</td>
+                        <td>@service.Price.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Brak usług.</p>
+    }
+</div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    public OrderDto order;
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        order = _orderService.GetById(Id);
+    }
+
+    private void BackToList()
+    {
+        _navigationManager.NavigateTo("/order");
+    }
+}

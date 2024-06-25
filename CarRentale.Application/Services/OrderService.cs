@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using CarRental.Application.IServices;
 using CarRental.Domain.Contracts;
+using CarRental.Domain.Exceptions;
 using CarRental.Domain.Models;
 using CarRental.SharedKernel.Dto;
+using Microsoft.AspNetCore.Components;
 
 namespace CarRental.Application.Services
 {
@@ -21,7 +23,7 @@ namespace CarRental.Application.Services
         {
             if (dto == null)
             {
-               // throw new BadRequestException("Order is null");
+               throw new BadRequestException("Order is null");
             }
 
             var id = _uow.OrderRepository.GetMaxId() + 1;
@@ -39,7 +41,7 @@ namespace CarRental.Application.Services
             var car = _uow.OrderRepository.Get(id);
             if (car == null)
             {
-                //    throw new NotFoundException("Product not found");
+                throw new NotFoundException("Order not found");
             }
 
             _uow.OrderRepository.Delete(car);
@@ -58,13 +60,13 @@ namespace CarRental.Application.Services
         {
             if (id <= 0)
             {
-                //throw new BadRequestException("Id is less than zero");
+                throw new BadRequestException("Id is less than zero");
             }
 
-            var car = _uow.CarRepository.Get(id);
+            var car = _uow.OrderRepository.Get(id);
             if (car == null)
             {
-                //throw new NotFoundException("Product not found");
+                throw new NotFoundException("Order not found");
             }
 
             var result = _mapper.Map<OrderDto>(car);
@@ -81,12 +83,21 @@ namespace CarRental.Application.Services
             var car = _uow.OrderRepository.Get(dto.Id);
             if (car == null)
             {
-                // throw new NotFoundException("Product not found");
+                throw new NotFoundException("Order not found");
             }
 
-            //car.LicensePlate = dto.LicensePlate;
 
             _uow.Commit();
+        }
+
+        public void CompleteOrder(int id)
+        {
+            var car = _uow.OrderRepository.Get(id);
+            if (car == null)
+            {
+                throw new BadRequestException("Order not found");
+            }
+            _uow.OrderRepository.CompleteOrder(id);
         }
     }
 }

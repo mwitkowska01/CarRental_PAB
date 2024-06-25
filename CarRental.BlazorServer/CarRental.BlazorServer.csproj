@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Order\" />
     <Folder Include="Pages\Service\" />
   </ItemGroup>
 

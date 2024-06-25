@@ -9,5 +9,6 @@ namespace CarRental.Application.IServices
         int Create(OrderDto dto);
         void Update(OrderDto dto);
         void Delete(int id);
+        void CompleteOrder(int id);
     }
 }

@@ -27,5 +27,17 @@ namespace CarRental.Infrastructure.Repositories
                 .Include(o => o.Personel)
                 .ToList();
         }
+
+        public void CompleteOrder(int id)
+        {
+            var order = _rentalDbContext.Orders.FirstOrDefault(o => o.Id == id);
+
+            if (order != null)
+            {
+                order.CompletionDate = DateTime.Now;
+
+                _rentalDbContext.SaveChanges();
+            }
+        }
     }
 }

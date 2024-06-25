@@ -176,7 +176,6 @@ namespace CarRental.Infrastructure
                         {
                             Id = 2,
                             AdmissionDate = DateTime.Now.AddDays(-5),
-                            CompletionDate = DateTime.Now.AddDays(-1),
                             Car = car2,
                             Personel = personnel2,
                         };
