@@ -6,5 +6,6 @@ namespace CarRental.Domain.Contracts
     {
         int GetMaxId();
         void CompleteOrder(int id);
+        void AddPersonel(int OrderId, int PersonelId);
     }
 }

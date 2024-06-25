@@ -1,0 +1,43 @@
+﻿@page "/order/addPersonel/{id:int}"
+@inject IOrderService _orderService
+@inject IPersonelService _personelService
+@inject NavigationManager _navigationManager
+
+<PageTitle>Serwis samochodowy | Dodaj personel do zamówienia</PageTitle>
+
+<h1>Dodaj personel do zamówienia</h1>
+
+<div class="form-group">
+    <label for="personelSelect">Wybierz personel:</label>
+    <select id="personelSelect" class="form-control" @bind="SelectedPersonelId">
+        <option value="">Wybierz...</option>
+        @foreach (var personel in personelList)
+        {
+            <option value="@personel.Id">@personel.Name @personel.LastName</option>
+        }
+    </select>
+</div>
+<button class="btn btn-primary" @onclick="AddPersonel">Dodaj personel do zamówienia</button>
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private List<PersonelDto> personelList;
+    private int SelectedPersonelId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        personelList = _personelService.GetAll(); // Załóżmy, że istnieje metoda w serwisie do pobrania listy personelu
+    }
+
+    private async Task AddPersonel()
+    {
+        if (SelectedPersonelId != 0)
+        {
+             _orderService.AddPersonel(Id, SelectedPersonelId);
+            _navigationManager.NavigateTo("/order"); 
+        }
+    }
+}

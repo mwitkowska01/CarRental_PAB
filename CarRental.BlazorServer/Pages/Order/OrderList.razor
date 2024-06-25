@@ -11,6 +11,7 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th>Numer zamówienia</th>
                     <th>Klient</th>
                     <th>Pracownik</th>
                     <th>Rejestracja</th>
@@ -23,8 +24,16 @@
                 @foreach (var p in orderList)
                 {
                     <tr>
-                        <td>@p.Personel.Name @p.Personel.LastName</td>
-                        <td>@p.Personel.Name @p.Personel.LastName</td>
+                        <th>@p.Id</th>
+                        <td>@p.Contractor.Name @p.Contractor.LastName</td>
+                        @if (@p.Personel != null)
+                        {
+                            <td>@p.Personel.Name @p.Personel.LastName</td>
+                        }
+                        else
+                        {
+                            <td>N/A</td>
+                        }
                         <td>@p.Car.LicensePlate</td>
                         <td>@p.AdmissionDate.ToString("yyyy-MM-dd")</td>
                         <td>@(p.CompletionDate.HasValue ? p.CompletionDate.Value.ToString("yyyy-MM-dd") : "N/A")</td>
@@ -38,6 +47,13 @@
                                 <button class="btn btn-warning" @onclick="@(()=>CompleteOrder(@p.Id))">
                                     <span class="oi oi-pencil" aria-hidden="true"></span>
                                     Ukończ
+                                </button>
+                            }
+                            @if (p.Personel == null)
+                            {
+                                <button class="btn btn-warning" @onclick="@(()=>AddPersonel(@p.Id))">
+                                    <span class="oi oi-pencil" aria-hidden="true"></span>
+                                    Dodaj personel
                                 </button>
                             }
                         </td>
@@ -66,5 +82,10 @@
     protected async Task GetDetail(int id)
     {
         _navigationManager.NavigateTo($"/order/detail/{id}");
+    }
+
+    protected async Task AddPersonel(int id)
+    {
+        _navigationManager.NavigateTo($"/order/AddPersonel/{id}");
     }
 }

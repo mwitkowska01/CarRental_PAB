@@ -7,6 +7,7 @@
         public DateTime? CompletionDate { get; set; }
         public ICollection<ServiceDto> Services { get; set; }
         public CarDto Car { get; set; }
-        public PersonelDto Personel { get; set; }
+        public PersonelDto? Personel { get; set; }
+        public ContractorDto Contractor { get; set; }
     }
 }

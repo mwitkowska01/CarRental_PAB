@@ -1,8 +1,6 @@
 ﻿using CarRental.Domain.Contracts;
 using CarRental.Domain.Models;
-using CarRental.SharedKernel.Dto;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata.Ecma335;
 
 namespace CarRental.Infrastructure.Repositories
 {
@@ -25,6 +23,7 @@ namespace CarRental.Infrastructure.Repositories
                 .Include(o => o.Details)
                 .Include(o => o.Car)
                 .Include(o => o.Personel)
+                .Include(o => o.Contractor)
                 .ToList();
         }
 
@@ -36,6 +35,17 @@ namespace CarRental.Infrastructure.Repositories
             {
                 order.CompletionDate = DateTime.Now;
 
+                _rentalDbContext.SaveChanges();
+            }
+        }
+
+        public void AddPersonel(int OrderId, int PersonelId)
+        {
+            var personel = _rentalDbContext.Personels.FirstOrDefault(o => o.Id == PersonelId);
+            var order = _rentalDbContext.Orders.FirstOrDefault(o => o.Id == OrderId);
+            if (order != null && personel != null)
+            {
+                order.Personel = personel;
                 _rentalDbContext.SaveChanges();
             }
         }

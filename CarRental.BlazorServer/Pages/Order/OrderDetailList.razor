@@ -22,9 +22,9 @@
     <p><strong>Rok produkcji:</strong> @order.Car.Year</p>
 
     <h4>Informacje o kliencie</h4>
-    <p><strong>Imię i nazwisko:</strong> @order.Personel.Name @order.Personel.LastName</p>
-    <p><strong>Email:</strong> @order.Personel.Email</p>
-    <p><strong>Telefon:</strong> @order.Personel.Phone</p>
+    <p><strong>Imię i nazwisko:</strong> @order.Contractor.Name @order.Contractor.LastName</p>
+    <p><strong>Email:</strong> @order.Contractor.Email</p>
+    <p><strong>Telefon:</strong> @order.Contractor.PhoneNumber</p>
 
     @if (order.Personel != null)
     {
@@ -60,7 +60,6 @@
         <p>Brak usług.</p>
     }
 </div>
-}
 
 @code {
     [Parameter]

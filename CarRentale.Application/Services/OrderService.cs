@@ -77,7 +77,7 @@ namespace CarRental.Application.Services
         {
             if (dto == null)
             {
-                //throw new BadRequestException("No car data");
+                throw new BadRequestException("No car data");
             }
 
             var car = _uow.OrderRepository.Get(dto.Id);
@@ -98,6 +98,22 @@ namespace CarRental.Application.Services
                 throw new BadRequestException("Order not found");
             }
             _uow.OrderRepository.CompleteOrder(id);
+        }
+
+        public void AddPersonel(int OrderId, int PersonelId)
+        {
+            var car = _uow.OrderRepository.Get(OrderId);
+            if (car == null)
+            {
+                throw new BadRequestException("Order not found");
+            }
+            var personel = _uow.PersonelRepository.Get(PersonelId);
+            if (car == null)
+            {
+                throw new BadRequestException("Personel not found");
+            }
+            _uow.OrderRepository.AddPersonel(OrderId, PersonelId);
+
         }
     }
 }

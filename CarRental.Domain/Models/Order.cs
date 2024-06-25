@@ -7,6 +7,7 @@
         public DateTime? CompletionDate { get; set; }
         public ICollection<OrderDetails> Details { get; set; }
         public Car Car { get; set; }
-        public Personel Personel { get; set; }
+        public Personel? Personel { get; set; }
+        public Contractor Contractor { get; set; }
     }
 }

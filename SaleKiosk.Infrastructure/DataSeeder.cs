@@ -155,7 +155,9 @@ namespace CarRental.Infrastructure
                 if (!_dbContext.Orders.Any())
                 {
                     var car1 = _dbContext.Cars.FirstOrDefault(c => c.Id == 1);
-                    var car2 = _dbContext.Cars.FirstOrDefault(c => c.Id == 2);
+                    var Contractor1 = _dbContext.Contractors.FirstOrDefault(c => c.Id == 1);
+                    var car2 = _dbContext.Cars.FirstOrDefault(c => c.Id == 3);
+                    var Contractor2 = _dbContext.Contractors.FirstOrDefault(c => c.Id == 2);
                     var personnel1 = _dbContext.Personels.FirstOrDefault(p => p.Id == 1);
                     var personnel2 = _dbContext.Personels.FirstOrDefault(p => p.Id == 2);
                     var services1 = _dbContext.Services.Take(2).ToList();
@@ -169,7 +171,7 @@ namespace CarRental.Infrastructure
                             AdmissionDate = DateTime.Now.AddDays(-3),
                             CompletionDate = DateTime.Now,
                             Car = car1,
-                            Personel = personnel1,
+                            Contractor = Contractor1
                         };
 
                         var order2 = new Order()
@@ -178,6 +180,7 @@ namespace CarRental.Infrastructure
                             AdmissionDate = DateTime.Now.AddDays(-5),
                             Car = car2,
                             Personel = personnel2,
+                            Contractor = Contractor2
                         };
 
                         _dbContext.Orders.AddRange(order1, order2);
