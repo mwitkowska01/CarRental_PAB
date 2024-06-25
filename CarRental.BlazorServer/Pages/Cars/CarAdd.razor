@@ -1,0 +1,65 @@
+﻿@page "/car/add"
+@inject ICarService _carService
+@inject NavigationManager _navigationManager
+
+<PageTitle>Serwis samochodowy: Dodaj auto</PageTitle>
+<h1>Dodaj auto</h1>
+<br />
+<EditForm Model="@_car" OnValidSubmit="@AddCar">
+    <FluentValidationValidator @ref="_fluentValidationValidator" DisableAssemblyScanning="@true" />
+    <ValidationSummary />
+    <div class="form-group">
+        <label>Model: </label>
+        <InputText @bind-Value="@_car.Model" class="form-control" />
+        <ValidationMessage For="@(() => _car.Model)" />
+    </div>
+    <div class="form-group">
+        <label>Marka: </label>
+        <select @bind="@_car.Make" class="form-control">
+            @foreach (CarMake make in Enum.GetValues(typeof(CarMake)))
+            {
+                <option value="@make">@make</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Rok: </label>
+        <InputNumber @bind-Value="@_car.Year" class="form-control" />
+        <ValidationMessage For="@(() => _car.Year)" />
+    </div>
+    <div class="form-group">
+        <label>Numer rejestracyjny: </label>
+        <InputText @bind-Value="@_car.LicensePlate" class="form-control" />
+        <ValidationMessage For="@(() => _car.LicensePlate)" />
+    </div>
+    <div class="form-group">
+        <label>VIN: </label>
+        <InputText @bind-Value="@_car.VIN" class="form-control" />
+        <ValidationMessage For="@(() => _car.VIN)" />
+    </div>
+    <br />
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit"> <span class="oi oi-plus"></span>Dodaj</button>
+        <button @onclick="BackToList" class="btn btn-secondary" type="button">
+            <span class="oi oi-media-skip-backward"></span>
+            Wróć do listy
+        </button>
+    </div>
+</EditForm>
+
+@code {
+    private FluentValidationValidator? _fluentValidationValidator;
+
+    private CarDto _car = new CarDto();
+
+    private void BackToList()
+    {
+        _navigationManager.NavigateTo("/car");
+    }
+
+    private void AddCar()
+    {
+        _carService.Create(_car);
+        _navigationManager.NavigateTo("/car");
+    }
+}

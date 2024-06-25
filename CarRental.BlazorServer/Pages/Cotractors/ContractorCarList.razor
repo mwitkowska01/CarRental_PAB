@@ -1,0 +1,53 @@
+﻿@page "/contractor/car/{id:int}"
+@inject IContractorService _contractorService
+@inject IJSRuntime _js
+@inject NavigationManager _navigationManager
+
+<h1>Lista aut klienta: @contractorDto.Name @contractorDto.LastName </h1>
+<br />
+<div>
+    <div>
+        <a href="car/add" class="btn bg-primary"><span class="oi oi-plus" aria-hidden="true"></span>Dodaj auto klienta</a>
+    </div>
+    <br />
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Marka</th>
+                    <th>Model</th>
+                    <th>Rok produkcji</th>
+                    <th>VIN</th>
+                    <th>Numer rejestracyjny</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in carList)
+                {
+                    <tr>
+                        <td>@p.Make</td>
+                        <td>@p.Model</td>
+                        <td>@p.Year</td>
+                        <td>@p.VIN</td>
+                        <td>@p.LicensePlate</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private List<CarDto> carList  = null;
+    private ContractorDto contractorDto = null;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        carList = _contractorService.GetContractorCar(Id);
+        contractorDto = _contractorService.GetById(Id);
+    }
+}

@@ -1,0 +1,48 @@
+﻿@page "/personel/add"
+@inject IPersonelService personelService
+@inject NavigationManager _navigationManager
+
+<PageTitle>Serwis samochodowy: Dodaj personel</PageTitle>
+<h1>Dodaj personel</h1>
+<br />
+<EditForm Model="@personel" OnValidSubmit="@AddPersonel">
+    <FluentValidationValidator @ref="_fluentValidationValidator" DisableAssemblyScanning="@true" />
+    <ValidationSummary />
+    <div class="form-group">
+        <label>Imię: </label>
+        <InputText @bind-Value="@personel.Name" class="form-control" />
+        <ValidationMessage For="@(() => personel.Name)" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Nazwisko: </label>
+        <InputText @bind-Value="@personel.LastName" class="form-control" />
+        <ValidationMessage For="@(() => personel.LastName)" />
+    </div>
+    <div class="form-group">
+        <label>Marka: </label>
+        <select @bind="@personel.Position" class="form-control">
+            @foreach (Position position in Enum.GetValues(typeof(Position)))
+            {
+                <option value="@position">@position</option>
+            }
+        </select>
+    </div>
+]
+</EditForm>
+
+@code {
+    private FluentValidationValidator? _fluentValidationValidator;
+
+    private PersonelDto personel = new PersonelDto();
+    private void BackToList()
+    {
+        _navigationManager.NavigateTo("/personel");
+    }
+
+    private void AddPersonel()
+    {
+        personelService.Create(personel);
+        _navigationManager.NavigateTo("/personel");
+    }
+}

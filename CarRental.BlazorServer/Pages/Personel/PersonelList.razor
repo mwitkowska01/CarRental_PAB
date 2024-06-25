@@ -1,0 +1,68 @@
+﻿@page "/personel"
+@inject IPersonelService _personelService
+@inject IJSRuntime _js
+@inject NavigationManager _navigationManager
+
+<PageTitle>Serwis samochodowy | Personel</PageTitle>
+<h1>Lista personelu</h1>
+<br />
+<div>
+    <div>
+        <a href="car/add" class="btn bg-primary"><span class="oi oi-plus" aria-hidden="true"></span>Dodaj usługę</a>
+    </div>
+    <br />
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Imię</th>
+                    <th>Nazwisko</th>
+                    <th>Adres</th>
+                    <th>Email</th>
+                    <th>Numer telefonu</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in personelList)
+                {
+                    <tr>
+                        <td>@p.Name</td>
+                        <td>@p.LastName</td>
+                        <td>@p.Position</td>
+                        <td>@p.Email</td>
+                        <td>
+                            <button class="btn bg-warning" @onclick="@(()=>UpdatePersonel(@p.Id))"><span class="oi oi-pencil" aria-hidden="true"></span>Edytuj</button>
+                            <button class="btn bg-danger" @onclick="@(()=>DeletePersonel(@p.Id))"><span class="oi oi-delete" aria-hidden="true"></span>Usuń</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@code {
+    private List<PersonelDto> personelList = null;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        personelList = _personelService.GetAll();
+    }
+    protected async Task DeletePersonel(int id)
+    {
+        var personel = personelList.First(q => q.Id == id);
+        var confirm = await _js.InvokeAsync<bool>("confirm", $"Jesteś pewien że chcesz usunąć pracownika: {personel.Name} {personel.LastName}?");
+        if (confirm)
+        {
+            _personelService.Delete(id);
+            OnInitialized();
+        }
+    }
+
+    protected async Task UpdatePersonel(int id)
+    {
+        _navigationManager.NavigateTo($"personel/add/{id}");
+    }
+}

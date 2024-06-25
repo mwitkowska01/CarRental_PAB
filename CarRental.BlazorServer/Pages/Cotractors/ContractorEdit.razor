@@ -1,0 +1,76 @@
+﻿@page "/contractor/edit/{id:int}"
+@inject IContractorService _contractorService
+@inject NavigationManager _navigationManager
+
+<PageTitle>Serwis samochodowy: Edycja klienta</PageTitle>
+<h1>Edycja klienta</h1>
+<br />
+<EditForm Model="@_contractor" OnValidSubmit="@UpdateContractor">
+    <FluentValidationValidator @ref="_fluentValidationValidator" DisableAssemblyScanning="@true" />
+    <ValidationSummary />
+    <div class="form-group">
+        <label>Imię: </label>
+        <InputText @bind-Value="@_contractor.Name" class="form-control" />
+        <ValidationMessage For="@(() => _contractor.Name)" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Nazwisko: </label>
+        <InputText @bind-Value="@_contractor.LastName" class="form-control" />
+        <ValidationMessage For="@(() => _contractor.LastName)" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Adres: </label>
+        <InputText @bind-Value="@_contractor.Address" class="form-control" />
+        <ValidationMessage For="@(() => _contractor.Address)" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Numer telefonu: </label>
+        <InputText @bind-Value="@_contractor.PhoneNumber" class="form-control" />
+        <ValidationMessage For="@(() => _contractor.PhoneNumber)" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Email: </label>
+        <InputText @bind-Value="@_contractor.Email" class="form-control" />
+        <ValidationMessage For="@(() => _contractor.Email)" />
+    </div>
+    <br />
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit"> <span class="oi oi-pencil"></span>Zapisz</button>
+        <button @onclick="BackToList" class="btn btn-secondary" type="button">
+            <span class="oi oi-media-skip-backward"></span>
+            Wróć do listy
+        </button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private FluentValidationValidator? _fluentValidationValidator;
+
+    private ContractorDto _contractor = null;
+    private string _oldImageUrl = null;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        var p = _contractorService.GetById(Id);
+        _contractor = new ContractorDto() { Name = p.Name, LastName = p.LastName, Address = p.Address, Email = p.Email, PhoneNumber = p.PhoneNumber };
+    }
+
+    private void BackToList()
+    {
+        _navigationManager.NavigateTo("/contractor");
+    }
+    private void UpdateContractor()
+    {
+        _contractorService.Update(_contractor);
+        _navigationManager.NavigateTo("/contractor");
+    }
+
+}

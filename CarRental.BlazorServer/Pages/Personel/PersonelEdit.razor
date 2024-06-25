@@ -1,0 +1,80 @@
+﻿@page "/personel/edit/{id:int}"
+@inject IPersonelService _personelService
+@inject NavigationManager _navigationManager
+
+<PageTitle>Serwis samochodowy: Edycja klienta</PageTitle>
+<h1>Edycja klienta</h1>
+<br />
+<EditForm Model="@personel" OnValidSubmit="@UpdateContractor">
+    <FluentValidationValidator @ref="_fluentValidationValidator" DisableAssemblyScanning="@true" />
+    <ValidationSummary />
+    <div class="form-group">
+        <label>Imię: </label>
+        <InputText @bind-Value="@personel.Name" class="form-control" />
+        <ValidationMessage For="@(() => personel.Name)" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Nazwisko: </label>
+        <InputText @bind-Value="@personel.LastName" class="form-control" />
+        <ValidationMessage For="@(() => personel.LastName)" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Pozycja: </label>
+        <select @bind="@personel.Position" class="form-control">
+            @foreach (Position position in Enum.GetValues(typeof(Position)))
+            {
+                <option value="@position">@position</option>
+            }
+        </select>
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Numer telefonu: </label>
+        <InputText @bind-Value="@personel.Phone" class="form-control" />
+        <ValidationMessage For="@(() => personel.Phone)" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Email: </label>
+        <InputText @bind-Value="@personel.Email" class="form-control" />
+        <ValidationMessage For="@(() => personel.Email)" />
+    </div>
+    <br />
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit"> <span class="oi oi-pencil"></span>Zapisz</button>
+        <button @onclick="BackToList" class="btn btn-secondary" type="button">
+            <span class="oi oi-media-skip-backward"></span>
+            Wróć do listy
+        </button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private FluentValidationValidator? _fluentValidationValidator;
+
+    private PersonelDto personel = null;
+    private string _oldImageUrl = null;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        var p = _personelService.GetById(Id);
+        personel = new PersonelDto() { Name = p.Name, LastName = p.LastName, Position = p.Position, Email = p.Email, Phone = p.Phone };
+    }
+
+    private void BackToList()
+    {
+        _navigationManager.NavigateTo("/personel");
+    }
+    private void UpdateContractor()
+    {
+        _personelService.Update(personel);
+        _navigationManager.NavigateTo("/personel");
+    }
+
+}
