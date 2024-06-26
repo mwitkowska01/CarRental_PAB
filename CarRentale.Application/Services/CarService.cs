@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CarRental.Application.IServices;
 using CarRental.Domain.Contracts;
+using CarRental.Domain.Exceptions;
 using CarRental.Domain.Models;
 using CarRental.SharedKernel.Dto;
 
@@ -20,9 +21,7 @@ namespace CarRental.Application.Services
         public int Create(CarDto dto)
         {
             if (dto == null)
-            {
-                //throw new BadRequestException("Product is null");
-            }
+                throw new BadRequestException("Car is null");
 
             var id = _uow.CarRepository.GetMaxId() + 1;
             var car = _mapper.Map<Car>(dto);
@@ -38,9 +37,7 @@ namespace CarRental.Application.Services
         {
             var car = _uow.CarRepository.Get(id);
             if (car == null)
-            {
-            //    throw new NotFoundException("Product not found");
-            }
+                throw new NotFoundException("Car not found");
 
             _uow.CarRepository.Delete(car);
             _uow.Commit();
@@ -56,15 +53,12 @@ namespace CarRental.Application.Services
         public CarDto GetById(int id)
         {
             if (id <= 0)
-            {
-                //throw new BadRequestException("Id is less than zero");
-            }
+                 throw new BadRequestException("Id is less than zero");
 
             var car = _uow.CarRepository.Get(id);
+
             if (car == null)
-            {
-                //throw new NotFoundException("Product not found");
-            }
+                throw new NotFoundException("Car not found");
 
             var result = _mapper.Map<CarDto>(car);
             return result;
@@ -73,21 +67,16 @@ namespace CarRental.Application.Services
         public void Update(CarDto dto)
         {
             if (dto == null)
-            {
-                //throw new BadRequestException("No car data");
-            }
+                throw new BadRequestException("No car data");
 
             var car = _uow.CarRepository.Get(dto.Id);
             if (car == null)
-            {
-               // throw new NotFoundException("Product not found");
-            }
+                throw new NotFoundException("Car not found");
 
             car.LicensePlate = dto.LicensePlate;
             car.Year = dto.Year;
             car.Make = (Domain.Models.CarMake)dto.Make;
             car.LicensePlate = dto.LicensePlate;
-
 
             _uow.Commit();
         }

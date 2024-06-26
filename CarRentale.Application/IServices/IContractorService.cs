@@ -10,5 +10,6 @@ namespace CarRental.Application.IServices
         void Update(ContractorDto dto);
         void Delete(int id);
         List<CarDto> GetContractorCar(int id);
+        public void DeleteCar(int contractorId, int carId);
     }
 }

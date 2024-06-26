@@ -4,7 +4,6 @@ using CarRental.Domain.Contracts;
 using CarRental.Domain.Exceptions;
 using CarRental.Domain.Models;
 using CarRental.SharedKernel.Dto;
-using Microsoft.AspNetCore.Components;
 
 namespace CarRental.Application.Services
 {
@@ -22,9 +21,7 @@ namespace CarRental.Application.Services
         public int Create(OrderDto dto)
         {
             if (dto == null)
-            {
                throw new BadRequestException("Order is null");
-            }
 
             var id = _uow.OrderRepository.GetMaxId() + 1;
             var order = _mapper.Map<Order>(dto);
@@ -38,13 +35,11 @@ namespace CarRental.Application.Services
 
         public void Delete(int id)
         {
-            var car = _uow.OrderRepository.Get(id);
-            if (car == null)
-            {
+            var order = _uow.OrderRepository.Get(id);
+            if (order == null)
                 throw new NotFoundException("Order not found");
-            }
 
-            _uow.OrderRepository.Delete(car);
+            _uow.OrderRepository.Delete(order);
             _uow.Commit();
         }
 
@@ -59,59 +54,48 @@ namespace CarRental.Application.Services
         public OrderDto GetById(int id)
         {
             if (id <= 0)
-            {
                 throw new BadRequestException("Id is less than zero");
-            }
 
-            var car = _uow.OrderRepository.Get(id);
-            if (car == null)
-            {
+            var order = _uow.OrderRepository.Get(id);
+            if (order == null)
                 throw new NotFoundException("Order not found");
-            }
 
-            var result = _mapper.Map<OrderDto>(car);
+            var result = _mapper.Map<OrderDto>(order);
             return result;
         }
 
         public void Update(OrderDto dto)
         {
             if (dto == null)
-            {
-                throw new BadRequestException("No car data");
-            }
+                throw new BadRequestException("No order data");
 
-            var car = _uow.OrderRepository.Get(dto.Id);
-            if (car == null)
-            {
+            var order = _uow.OrderRepository.Get(dto.Id);
+            if (order == null)
                 throw new NotFoundException("Order not found");
-            }
-
 
             _uow.Commit();
         }
 
         public void CompleteOrder(int id)
         {
-            var car = _uow.OrderRepository.Get(id);
-            if (car == null)
-            {
+            var order = _uow.OrderRepository.Get(id);
+            if (order == null)
                 throw new BadRequestException("Order not found");
-            }
+
             _uow.OrderRepository.CompleteOrder(id);
         }
 
         public void AddPersonel(int OrderId, int PersonelId)
         {
-            var car = _uow.OrderRepository.Get(OrderId);
-            if (car == null)
-            {
+            var order = _uow.OrderRepository.Get(OrderId);
+            if (order == null)
                 throw new BadRequestException("Order not found");
-            }
+
             var personel = _uow.PersonelRepository.Get(PersonelId);
-            if (car == null)
-            {
+
+            if (personel == null)
                 throw new BadRequestException("Personel not found");
-            }
+
             _uow.OrderRepository.AddPersonel(OrderId, PersonelId);
 
         }

@@ -6,5 +6,7 @@ namespace CarRental.Domain.Contracts
     {
         int GetMaxId();
         List<Car> GetContractorCar(int id);
+        void DeleteCar(int contractorId, int carId);
+
     }
 }

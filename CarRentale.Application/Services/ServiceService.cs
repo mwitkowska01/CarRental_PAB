@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using CarRental.Application.IServices;
 using CarRental.Domain.Contracts;
-using AutoMapper;
-using CarRental.Application.IServices;
-using CarRental.Domain.Contracts;
 using CarRental.Domain.Models;
 using CarRental.SharedKernel.Dto;
 using CarRental.Domain.Exceptions;
@@ -24,15 +21,13 @@ namespace CarRental.Application.Services
         public int Create(ServiceDto dto)
         {
             if (dto == null)
-            {
                 throw new BadRequestException("Service is null");
-            }
 
             var id = _uow.ServiceRepository.GetMaxId() + 1;
-            var car = _mapper.Map<Service>(dto);
-            car.Id = id;
+            var service = _mapper.Map<Service>(dto);
+            service.Id = id;
 
-            _uow.ServiceRepository.Insert(car);
+            _uow.ServiceRepository.Insert(service);
             _uow.Commit();
 
             return id;
@@ -40,54 +35,48 @@ namespace CarRental.Application.Services
 
         public void Delete(int id)
         {
-            var car = _uow.ServiceRepository.Get(id);
-            if (car == null)
-            {
-                //    throw new NotFoundException("Product not found");
-            }
+            var service = _uow.ServiceRepository.Get(id);
+            if (service == null)
+                throw new NotFoundException("Services not found");
 
-            _uow.ServiceRepository.Delete(car);
+            _uow.ServiceRepository.Delete(service);
             _uow.Commit();
         }
 
         public List<ServiceDto> GetAll()
         {
-            var cars = _uow.ServiceRepository.GetAll();
+            var services = _uow.ServiceRepository.GetAll();
 
-            List<ServiceDto> result = _mapper.Map<List<ServiceDto>>(cars);
+            List<ServiceDto> result = _mapper.Map<List<ServiceDto>>(services);
             return result;
         }
         public ServiceDto GetById(int id)
         {
             if (id <= 0)
-            {
-                //throw new BadRequestException("Id is less than zero");
-            }
+                throw new BadRequestException("Id is less than zero");
 
-            var car = _uow.ServiceRepository.Get(id);
-            if (car == null)
-            {
-                //throw new NotFoundException("Product not found");
-            }
+            var service = _uow.ServiceRepository.Get(id);
 
-            var result = _mapper.Map<ServiceDto>(car);
+            if (service == null)
+                throw new NotFoundException("Services not found");
+
+            var result = _mapper.Map<ServiceDto>(service);
             return result;
         }
 
         public void Update(ServiceDto dto)
         {
             if (dto == null)
-            {
-                //throw new BadRequestException("No car data");
-            }
+                throw new BadRequestException("No Services data");
 
-            var car = _uow.ServiceRepository.Get(dto.Id);
-            if (car == null)
-            {
-                // throw new NotFoundException("Product not found");
-            }
+            var service = _uow.ServiceRepository.Get(dto.Id);
 
-            //car.LicensePlate = dto.LicensePlate;
+            if (service == null)
+                 throw new NotFoundException("Services not found");
+
+            service.Name = dto.Name;
+            service.Description = dto.Description;
+            service.Price = dto.Price;
 
             _uow.Commit();
         }

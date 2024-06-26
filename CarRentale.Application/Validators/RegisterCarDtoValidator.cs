@@ -1,15 +1,10 @@
 ﻿using CarRental.Domain.Contracts;
 using CarRental.SharedKernel.Dto;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarRental.Application.Validators
 {
-    internal class RegisterCarDtoValidator : AbstractValidator<CarDto>
+    public class RegisterCarDtoValidator : AbstractValidator<CarDto>
     {
         public RegisterCarDtoValidator(IRentalUnitOfWork unitOfWork)
         {

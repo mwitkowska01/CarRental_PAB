@@ -21,15 +21,13 @@ namespace CarRental.Application.Services
         public int Create(PersonelDto dto)
         {
             if (dto == null)
-            {
-                throw new BadRequestException("Product is null");
-            }
+                throw new BadRequestException("Personel is null");
 
             var id = _uow.PersonelRepository.GetMaxId() + 1;
-            var car = _mapper.Map<Personel>(dto);
-            car.Id = id;
+            var personel = _mapper.Map<Personel>(dto);
+            personel.Id = id;
 
-            _uow.PersonelRepository.Insert(car);
+            _uow.PersonelRepository.Insert(personel);
             _uow.Commit();
 
             return id;
@@ -37,58 +35,49 @@ namespace CarRental.Application.Services
 
         public void Delete(int id)
         {
-            var car = _uow.PersonelRepository.Get(id);
-            if (car == null)
-            {
-                throw new NotFoundException("Product not found");
-            }
+            var personel = _uow.PersonelRepository.Get(id);
+            if (personel == null)
+                throw new NotFoundException("Personel not found");
 
-            _uow.PersonelRepository.Delete(car);
+            _uow.PersonelRepository.Delete(personel);
             _uow.Commit();
         }
 
         public List<PersonelDto> GetAll()
         {
-            var cars = _uow.PersonelRepository.GetAll();
+            var personels = _uow.PersonelRepository.GetAll();
 
-            List<PersonelDto> result = _mapper.Map<List<PersonelDto>>(cars);
+            List<PersonelDto> result = _mapper.Map<List<PersonelDto>>(personels);
             return result;
         }
         public PersonelDto GetById(int id)
         {
             if (id <= 0)
-            {
                 throw new BadRequestException("Id is less than zero");
-            }
 
-            var car = _uow.PersonelRepository.Get(id);
-            if (car == null)
-            {
-                throw new NotFoundException("Product not found");
-            }
+            var personel = _uow.PersonelRepository.Get(id);
 
-            var result = _mapper.Map<PersonelDto>(car);
+            if (personel == null)
+                throw new NotFoundException("Personel not found");
+
+            var result = _mapper.Map<PersonelDto>(personel);
             return result;
         }
 
         public void Update(PersonelDto dto)
         {
             if (dto == null)
-            {
-                throw new BadRequestException("No car data");
-            }
+                throw new BadRequestException("No personel data");
 
-            var car = _uow.PersonelRepository.Get(dto.Id);
-            if (car == null)
-            {
-                throw new NotFoundException("Product not found");
-            }
+            var personel = _uow.PersonelRepository.Get(dto.Id);
 
-            //car.LicensePlate = dto.LicensePlate;
-            car.Phone = dto.Phone;
-            car.Email = dto.Email;
-            car.LastName = dto.LastName;
-            car.Name = dto.Name;
+            if (personel == null)
+                throw new NotFoundException("Personel not found");
+
+            personel.Phone = dto.Phone;
+            personel.Email = dto.Email;
+            personel.LastName = dto.LastName;
+            personel.Name = dto.Name;
 
             _uow.Commit();
         }

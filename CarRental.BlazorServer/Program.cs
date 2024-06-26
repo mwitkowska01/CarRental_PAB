@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using NLog.Web;
 using NLog;
 using Radzen;
+using FluentValidation;
+using CarRental.SharedKernel.Dto;
+using CarRental.Application.Validators;
 
 namespace CarRental.BlazorServer
 {
@@ -34,6 +37,12 @@ namespace CarRental.BlazorServer
                 var sqliteConnectionString = "Data Source=C:\\Users\\majwi\\source\\repos\\CarRental2-master\\Rental.WebAPI.Logger.db";
                 builder.Services.AddDbContext<RentalDbContext>(options =>
                      options.UseSqlite(sqliteConnectionString));
+
+                builder.Services.AddScoped<IValidator<ServiceDto>, RegisterServiceDtoValidator>();
+                builder.Services.AddScoped<IValidator<PersonelDto>, RegisterPersonelDtoValidator>();
+
+                builder.Services.AddScoped<IValidator<ContractorDto>, RegisterContractorDtoValidator>();
+                builder.Services.AddScoped<IValidator<CarDto>, RegisterCarDtoValidator>();
 
 
                 builder.Services.AddScoped<IRentalUnitOfWork, RentalUnitOfWork>();

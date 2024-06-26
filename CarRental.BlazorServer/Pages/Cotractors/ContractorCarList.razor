@@ -30,6 +30,9 @@
                         <td>@p.Year</td>
                         <td>@p.VIN</td>
                         <td>@p.LicensePlate</td>
+                        <td>
+                            <button class="btn bg-danger" @onclick="@(()=>DeleteContractorCar(@p.Id))"><span class="oi oi-delete" aria-hidden="true"></span>Usuń</button>
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -50,4 +53,15 @@
         carList = _contractorService.GetContractorCar(Id);
         contractorDto = _contractorService.GetById(Id);
     }
+    protected async Task DeleteContractorCar(int id)
+    {
+        var contractor = carList.First(q => q.Id == id);
+        var confirm = await _js.InvokeAsync<bool>("confirm", $"Jesteś pewien że chcesz usunąć Samochód klienta: {contractor.LicensePlate}?");
+        if (confirm)
+        {
+            _contractorService.DeleteCar(Id, id);
+            OnInitialized();
+        }
+    }
+    
 }
