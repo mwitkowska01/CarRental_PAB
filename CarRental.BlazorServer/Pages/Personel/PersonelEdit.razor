@@ -2,8 +2,8 @@
 @inject IPersonelService _personelService
 @inject NavigationManager _navigationManager
 
-<PageTitle>Serwis samochodowy: Edycja klienta</PageTitle>
-<h1>Edycja klienta</h1>
+<PageTitle>Serwis samochodowy: Edycja pracownika</PageTitle>
+<h1>Edycja pracownika</h1>
 <br />
 <EditForm Model="@personel" OnValidSubmit="@UpdateContractor">
     <FluentValidationValidator @ref="_fluentValidationValidator" DisableAssemblyScanning="@true" />
@@ -64,7 +64,7 @@
     {
         base.OnInitialized();
         var p = _personelService.GetById(Id);
-        personel = new PersonelDto() { Name = p.Name, LastName = p.LastName, Position = p.Position, Email = p.Email, Phone = p.Phone };
+        personel = new PersonelDto() { Id = p.Id, Name = p.Name, LastName = p.LastName, Position = p.Position, Email = p.Email, Phone = p.Phone };
     }
 
     private void BackToList()
@@ -76,5 +76,4 @@
         _personelService.Update(personel);
         _navigationManager.NavigateTo("/personel");
     }
-
 }

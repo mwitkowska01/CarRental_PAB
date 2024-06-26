@@ -1,0 +1,63 @@
+﻿@page "/service/edit/{id:int}"
+@inject IServiceService _serviceService
+@inject NavigationManager _navigationManager
+
+<PageTitle>Serwis samochodowy: Edycja usługi</PageTitle>
+<h1>Edycja klienta</h1>
+<br />
+<EditForm Model="@service" OnValidSubmit="@UpdateContractor">
+    <FluentValidationValidator @ref="_fluentValidationValidator" DisableAssemblyScanning="@true" />
+    <ValidationSummary />
+    <div class="form-group">
+        <label>Nazwa: </label>
+        <InputText @bind-Value="@service.Name" class="form-control" />
+        <ValidationMessage For="@(() => service.Name)" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Opis: </label>
+        <InputText @bind-Value="@service.Description" class="form-control" />
+        <ValidationMessage For="@(() => service.Description)" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Cena: </label>
+        <InputNumber @bind-Value="@service.Price" class="form-control" />
+        <ValidationMessage For="@(() => service.Price)" />
+    </div>
+    <br />
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit"> <span class="oi oi-pencil"></span>Zapisz</button>
+        <button @onclick="BackToList" class="btn btn-secondary" type="button">
+            <span class="oi oi-media-skip-backward"></span>
+            Wróć do listy
+        </button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private FluentValidationValidator? _fluentValidationValidator;
+
+    private ServiceDto service = null;
+    private string _oldImageUrl = null;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        var p = _serviceService.GetById(Id);
+        service = new ServiceDto() { Id = p.Id, Name = p.Name, Description = p.Description, Price = p.Price };
+    }
+
+    private void BackToList()
+    {
+        _navigationManager.NavigateTo("/personel");
+    }
+    private void UpdateContractor()
+    {
+        _serviceService.Update(service);
+        _navigationManager.NavigateTo("/personel");
+    }
+}

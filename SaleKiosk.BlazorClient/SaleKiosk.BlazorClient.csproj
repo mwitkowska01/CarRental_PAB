@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\Nowy folder\**" />
+    <Content Remove="wwwroot\Nowy folder\**" />
+    <EmbeddedResource Remove="wwwroot\Nowy folder\**" />
+    <None Remove="wwwroot\Nowy folder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.30" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.30" PrivateAssets="all" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Radzen.Blazor" Version="4.32.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SaleKiosk.SharedKernel\SaleKiosk.SharedKernel.csproj" />
+  </ItemGroup>
+
+</Project>

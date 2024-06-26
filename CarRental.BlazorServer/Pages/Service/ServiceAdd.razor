@@ -1,0 +1,53 @@
+﻿@page "/service/add"
+@inject IServiceService serviceService
+@inject NavigationManager _navigationManager
+
+<PageTitle>Serwis samochodowy: Dodaj usługę</PageTitle>
+<h1>Dodaj usługę</h1>
+<br />
+<EditForm Model="@service" OnValidSubmit="@AddPersonel">
+    <FluentValidationValidator @ref="_fluentValidationValidator" DisableAssemblyScanning="@true" />
+    <ValidationSummary />
+    <div class="form-group">
+        <label>Nazwa: </label>
+        <InputText @bind-Value="@service.Name" class="form-control" />
+        <ValidationMessage For="@(() => service.Name)" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Opis: </label>
+        <InputText @bind-Value="@service.Description" class="form-control" />
+        <ValidationMessage For="@(() => service.Description)" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Telefon: </label>
+        <InputNumber @bind-Value="@service.Price" class="form-control" />
+        <ValidationMessage For="@(() => service.Price)" />
+    </div>
+    <br />
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit"> <span class="oi oi-plus"></span>Dodaj</button>
+        <button @onclick="BackToList" class="btn btn-secondary" type="button">
+            <span class="oi oi-media-skip-backward"></span>
+            Wróć do listy
+        </button>
+    </div>
+</EditForm>
+
+@code {
+    private FluentValidationValidator? _fluentValidationValidator;
+
+    private ServiceDto service = new ServiceDto();
+
+    private void BackToList()
+    {
+        _navigationManager.NavigateTo("/service");
+    }
+
+    private void AddPersonel()
+    {
+        serviceService.Create(service);
+        _navigationManager.NavigateTo("/service");
+    }
+}

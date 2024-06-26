@@ -19,8 +19,9 @@
         <InputText @bind-Value="@personel.LastName" class="form-control" />
         <ValidationMessage For="@(() => personel.LastName)" />
     </div>
+    <br />
     <div class="form-group">
-        <label>Marka: </label>
+        <label>Stanowisko: </label>
         <select @bind="@personel.Position" class="form-control">
             @foreach (Position position in Enum.GetValues(typeof(Position)))
             {
@@ -28,13 +29,33 @@
             }
         </select>
     </div>
-]
+    <br />
+    <div class="form-group">
+        <label>Email: </label>
+        <InputText @bind-Value="@personel.Email" class="form-control" />
+        <ValidationMessage For="@(() => personel.Email)" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Telefon: </label>
+        <InputText @bind-Value="@personel.Phone" class="form-control" />
+        <ValidationMessage For="@(() => personel.Phone)" />
+    </div>
+    <br />
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit"> <span class="oi oi-plus"></span>Dodaj</button>
+        <button @onclick="BackToList" class="btn btn-secondary" type="button">
+            <span class="oi oi-media-skip-backward"></span>
+            Wróć do listy
+        </button>
+    </div>
 </EditForm>
 
 @code {
     private FluentValidationValidator? _fluentValidationValidator;
 
     private PersonelDto personel = new PersonelDto();
+
     private void BackToList()
     {
         _navigationManager.NavigateTo("/personel");

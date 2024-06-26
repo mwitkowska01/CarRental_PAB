@@ -8,7 +8,7 @@
 <br />
 <div>
     <div>
-        <a href="car/add" class="btn bg-primary"><span class="oi oi-plus" aria-hidden="true"></span>Dodaj usługę</a>
+        <a href="personel/add" class="btn bg-primary"><span class="oi oi-plus" aria-hidden="true"></span>Dodaj pracownika</a>
     </div>
     <br />
     <div>
@@ -17,7 +17,7 @@
                 <tr>
                     <th>Imię</th>
                     <th>Nazwisko</th>
-                    <th>Adres</th>
+                    <th>Stanowisko</th>
                     <th>Email</th>
                     <th>Numer telefonu</th>
                     <th></th>
@@ -63,6 +63,6 @@
 
     protected async Task UpdatePersonel(int id)
     {
-        _navigationManager.NavigateTo($"personel/add/{id}");
+        _navigationManager.NavigateTo($"personel/edit/{id}");
     }
 }

@@ -14,8 +14,8 @@ namespace CarRental.Infrastructure
 
         public void Seed()
         {
-            _dbContext.Database.EnsureDeleted();
-            _dbContext.Database.EnsureCreated();
+            //_dbContext.Database.EnsureDeleted();
+            //_dbContext.Database.EnsureCreated();
 
             if (_dbContext.Database.CanConnect())
             {

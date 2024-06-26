@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 
-namespace SaleKiosk.SharedKernel.Controllers
+namespace CarRental.SharedKernel.Controllers
 {
     [Route("[controller]")]
     public class FileController : ControllerBase

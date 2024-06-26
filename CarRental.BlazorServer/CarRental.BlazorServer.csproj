@@ -12,10 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Service\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\SaleKiosk.Infrastructure\CarRental.Infrastructure.csproj" />
   </ItemGroup>
 

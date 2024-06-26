@@ -1,0 +1,190 @@
+﻿@page "/cart"
+
+@inject ICartService _cartService
+@inject NavigationManager _navigationManager
+@inject IOrderService _orderService
+@inject NotificationService _notificationService
+
+<PageTitle>Order Manager</PageTitle>
+<h3>Order manager</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Count</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var c in _cart)
+        {
+            <tr>
+                <td>@c.Service.Name</td>
+                <td>@c.Service.Description</td>
+                <td>@c.Service.Price</td>
+                <td>
+                    <EditForm Model="@c">
+                        <p>
+                            <InputNumber @bind-Value=@c.Count readonly/>
+                            <button class="btn bg-secondary" @onclick=@(() => Increment(c.Service.Id, 1))>
+                                <span class="oi oi-plus"></span> 
+                            </button>
+                            <button class="btn bg-secondary" @onclick=@(() => Decrement(c.Service.Id, 1))>
+                                <span class="oi oi-minus"></span> 
+                            </button>
+                            <button class="btn bg-danger" @onclick=@(() => Decrement(c.Service.Id, c.Count))>
+                                <span class="oi oi-trash"></span> 
+                            </button>
+                        </p>
+                    </EditForm>
+                </td>
+                <td>@((c.Count * c.Service.Price).ToString("c"))</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td><b>Total:</b></td>
+            <td colspan="3" style="font-weight:bold;">@_total.ToString("c")</td>
+            <td>
+                <button class="btn bg-primary" @onclick="@(()=>SubmitOrder())"> 
+                    Submit order
+                </button>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<div class="container-fluid">
+<RadzenCard>
+    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Order Details</RadzenText>
+    <RadzenTextBox class="w-100" @bind-Value="@OrderMessage"  Placeholder="Order Details" MaxLength="100" />
+</RadzenCard>
+
+    <RadzenCard>
+        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Enter your unique client id </RadzenText>
+        <RadzenNumeric class="w-100" @bind-Value="@CustomerId" Placeholder="Client ID" />
+    </RadzenCard>
+</div>
+
+@code {
+    private List<CartItem> _cart = new List<CartItem>();
+    private decimal _total = 0;
+    public string OrderMessage { get; set; } = string.Empty;
+    public int CustomerId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _cart = await _cartService.GetCart();
+        CalculateTotal();
+    }
+
+    private void CalculateTotal()
+    {
+        _total = 0;
+        foreach(var c in _cart)
+        {
+            _total += c.Count * c.Service.Price;
+        }
+    }
+
+    private async Task Decrement(int id, int count)
+    {
+        // find cart item by product id
+        var item = _cart.FirstOrDefault(c => c.Service.Id == id);
+        if (item != null)
+        {
+            // prepare cart item to decrement
+            CartItem ci = new CartItem()
+                {
+                    Service = item.Service,
+                    Count = count
+                };
+
+            // decrement cart item in local storage
+            await _cartService.Decrement(ci);
+
+            // re-read cart & total
+            _cart = await _cartService.GetCart();
+            CalculateTotal();
+        }
+    }
+
+    private async Task Increment(int id, int count)
+    {
+        // find cart item by product id
+        var item = _cart.FirstOrDefault(c => c.Service.Id == id);
+        if (item != null)
+        {
+            // prepare cart item to decrement
+            CartItem ci = new CartItem()
+                {
+                    Service = item.Service,
+                    Count = count
+                };
+
+            // decrement cart item in local storage
+            await _cartService.Increment(ci);
+
+            // re-read cart & total
+            _cart = await _cartService.GetCart();
+            CalculateTotal();
+        }
+    }
+
+    private async Task SubmitOrder()
+    {
+
+        if (CustomerId <= 0)
+        {
+            ShowNotification("Error", "Please enter a valid Customer ID.", NotificationSeverity.Error);
+            return;
+        }
+        try
+        {
+            await _orderService.SubmitOrder(_cart, OrderMessage, CustomerId);
+            await _cartService.DeleteCart();
+        }
+        catch (ApplicationException ex)
+        {
+            ShowNotification("Error", ex.Message, NotificationSeverity.Error);
+            return;
+        }
+        catch (Exception ex)
+        {
+            ShowNotification("Error", $"An unexpected error occurred: {ex.Message}", NotificationSeverity.Error);
+        }
+
+
+        var notificationMessage = new NotificationMessage
+            {
+                Severity = NotificationSeverity.Info,
+                Summary = "Info",
+                Detail = "Zamówienie zostało złożone",
+                Duration = 4000,
+                CloseOnClick = true,
+                Payload = DateTime.Now
+            };
+
+        _notificationService.Notify(notificationMessage);
+
+        _navigationManager.NavigateTo("/product");
+    }
+
+    private void ShowNotification(string summary, string detail, NotificationSeverity severity)
+    {
+        var notificationMessage = new NotificationMessage
+            {
+                Severity = severity,
+                Summary = summary,
+                Detail = detail,
+                Duration = 8000,
+                CloseOnClick = true
+            };
+
+        _notificationService.Notify(notificationMessage);
+    }
+}
