@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRental.SharedKernel", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRental.BlazorServer", "CarRental.BlazorServer\CarRental.BlazorServer.csproj", "{990C7164-1F11-4E0A-89CF-81AD88393204}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRental.BlazorClient", "SaleKiosk.BlazorClient\CarRental.BlazorClient.csproj", "{B81225BE-9F58-4A2B-BAF3-0C3A76E076C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SaleKiosk.BlazorClient", "SaleKiosk.BlazorClient\SaleKiosk.BlazorClient.csproj", "{632E7354-0100-4D86-BAFA-083104CFA32C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,10 +47,10 @@ Global
 		{990C7164-1F11-4E0A-89CF-81AD88393204}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{990C7164-1F11-4E0A-89CF-81AD88393204}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{990C7164-1F11-4E0A-89CF-81AD88393204}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B81225BE-9F58-4A2B-BAF3-0C3A76E076C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B81225BE-9F58-4A2B-BAF3-0C3A76E076C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B81225BE-9F58-4A2B-BAF3-0C3A76E076C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B81225BE-9F58-4A2B-BAF3-0C3A76E076C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{632E7354-0100-4D86-BAFA-083104CFA32C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{632E7354-0100-4D86-BAFA-083104CFA32C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{632E7354-0100-4D86-BAFA-083104CFA32C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{632E7354-0100-4D86-BAFA-083104CFA32C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

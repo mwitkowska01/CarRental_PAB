@@ -4,79 +4,7 @@
 
 <PageTitle>Main Page</PageTitle>
 
-<div class="container">
-    <h1>Welcome to our Warehouse!</h1>
-    <p>Please navigate to section You are interested in.</p>
-
-    <div class="navigation-buttons">
-        <button class="btn btn-primary" @onclick="NavigateToProducts">Go to Products</button>
-        <button class="btn btn-primary" @onclick="NavigateToOrders">Go to Shopping Cart</button>
-        <button class="btn btn-primary" @onclick="NavigateToContactUs">Go to Contact Us</button>
-    </div>
-</div>
-
 @code {
-    private void NavigateToProducts()
-    {
-        _navigationManager.NavigateTo("/product");
-    }
 
-    private void NavigateToOrders()
-    {
-        _navigationManager.NavigateTo("/cart");
-    }
 
-    private void NavigateToContactUs()
-    {
-        _navigationManager.NavigateTo("/contactclient");
-    }
 }
-
-<style>
-    .container {
-        margin: 20px auto;
-        max-width: 600px;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        background-color: #f9f9f9;
-        font-family: Arial, sans-serif;
-        text-align: center;
-    }
-
-    h1 {
-        color: #333;
-        margin-bottom: 20px;
-    }
-
-    p {
-        color: #666;
-        line-height: 1.6;
-        margin-bottom: 30px;
-    }
-
-    .navigation-buttons {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .btn {
-        padding: 10px 20px;
-        font-size: 1.1em;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .btn-primary {
-        background-color: #1a73e8;
-        color: white;
-    }
-
-        .btn-primary:hover {
-            background-color: #155cb0;
-        }
-</style>
-

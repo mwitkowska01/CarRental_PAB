@@ -1,13 +1,13 @@
-﻿@page "/product"
+﻿@page "/service"
 @inject IServiceService _productService
 @inject ICartService _cartService
 @inject NotificationService _notificationService
 
-<PageTitle>Product list</PageTitle>
-<h3>Product list</h3>
+<PageTitle>Lista usług</PageTitle>
+<h3>Lista usług</h3>
 
 <div class="row">
-    @foreach (var p in _productList)
+    @foreach (var p in serviceList)
     {
         <div class="card m-2" style="width: 18rem;">
         <EditForm Model="@p" >
@@ -26,11 +26,11 @@
 @code {
     public int Count { get; set; } = 1;
 
-    private IEnumerable<ServiceDto> _productList = new List<ServiceDto>();
+    private IEnumerable<ServiceDto> serviceList = new List<ServiceDto>();
 
     protected override async Task OnInitializedAsync()
     {
-        _productList = await _productService.GetAll();
+        serviceList = await _productService.GetAll();
     }
 
     private async Task AddToShoppingCart(ServiceDto p)
